@@ -1,0 +1,38 @@
+{
+  "name": "steamer-browserutils",
+  "version": "0.0.1",
+  "description": "browser utils",
+  "main": "index.js",
+  "files": [
+    "dist",
+    "src",
+    "gulpfile.js"
+  ],
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteamerTeam/steamer-browserutils.git"
+  },
+  "keywords": [
+    "steamer",
+    "browser",
+    "utils"
+  ],
+  "author": "SteamerTeam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SteamerTeam/steamer-browserutils/issues"
+  },
+  "homepage": "https://github.com/SteamerTeam/steamer-browserutils#readme",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-loose": "^7.0.0"
+  }
+}
