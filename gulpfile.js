@@ -19,8 +19,22 @@ Object.keys(mapping).map((item, index) => {
 	srcLibs.push(mapping[item]);
 });
 
-gulp.task('default', () => {
+gulp.task('es5', () => {
 	return gulp.src(srcLibs)
     		   .pipe(concat('index.js'))
+    		   .pipe(babel({
+		            presets: ['es2015-loose']
+		        }))
      		   .pipe(gulp.dest('./'));
+});
+
+gulp.task('es6', () => {
+	return gulp.src(srcLibs)
+    		   .pipe(concat('es6.js'))
+     		   .pipe(gulp.dest('./'));
+});
+
+gulp.task('default', ['es5', 'es6'], (cb) => {
+	console.log("success");
+	cb();
 });
