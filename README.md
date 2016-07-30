@@ -52,7 +52,7 @@ import { extend, isType } from 'steamer-browserutils';
 ```
 
 ### Customized library
-If you hope to customized certain types of APIs. For example, if you hope to exclude `url` and `type` APIs, you can modify gulpfile.js like by commenting `url` and `type` keys of `mapping` object; Then run `gulp`, you will get a customized version.
+If you hope to customized certain types of APIs. For example, if you hope to exclude `url` and `type` APIs, you can modify gulpfile.js by commenting `url` and `type` keys of `mapping` object; Then run `gulp`, you will get a customized version.
 
 ```
 var mapping = {
