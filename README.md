@@ -2,8 +2,8 @@
 Browser utils for development
 
 
-### functions
-For usage details, you can open `index.js`
+### Functions
+For usage details, you can checkout `index.js`
 ####
 * class
 	- extend

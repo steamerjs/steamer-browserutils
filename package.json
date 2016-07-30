@@ -4,8 +4,7 @@
   "description": "browser utils",
   "main": "index.js",
   "files": [
-    "es6.js",
-    "es5.js",
+    "index.js",
     "src",
     "gulpfile.js"
   ],
