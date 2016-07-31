@@ -1,10 +1,11 @@
 {
   "name": "steamer-browserutils",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "browser utils",
   "main": "index.js",
   "files": [
     "index.js",
+    "es6.js",
     "src",
     "gulpfile.js"
   ],
