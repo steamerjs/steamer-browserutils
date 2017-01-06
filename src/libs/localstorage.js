@@ -43,6 +43,6 @@ export function delItem(key) {
         delete localStorage[key];
     } 
     else {
-        deleteCookie(key);
+        delCookie(key);
     }
 }

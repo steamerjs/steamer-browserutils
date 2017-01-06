@@ -1,6 +1,6 @@
 {
   "name": "steamer-browserutils",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "browser utils",
   "main": "index.js",
   "files": [

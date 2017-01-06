@@ -1,4 +1,12 @@
 /**
+ * steamer-browserutils
+ * github: https://github.com/SteamerTeam/steamer-browserutils
+ * npm: https://www.npmjs.com/package/steamer-browserutils
+ * version: 0.5.0
+ * date: 2016.07.30
+ */
+
+/**
  * @common functions
  * @author heyli
  * @date 2016.07.30
@@ -253,7 +261,7 @@ export function delItem(key) {
         delete localStorage[key];
     } 
     else {
-        deleteCookie(key);
+        delCookie(key);
     }
 }
 /**
