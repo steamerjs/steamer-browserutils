@@ -1,16 +1,19 @@
 {
   "name": "steamer-browserutils",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "browser utils",
   "main": "index.js",
+  "scripts": {
+    "lint": "eslint src"
+  },
   "files": [
     "index.js",
     "es6.js",
     "src",
     "gulpfile.js"
   ],
-  "scripts": {
-    
+  "eslintConfig": {
+    "extends": "./config/eslint-config.js"
   },
   "repository": {
     "type": "git",

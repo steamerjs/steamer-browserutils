@@ -4,7 +4,7 @@
  * @date 2016.07.30
  */
 
-export function callApi(url, domain = "jsbridge://") {
+export function callApi(url) {
 	var iframe = document.createElement('iframe');
 	iframe.src = url;
 	iframe.height = 0;

@@ -89,6 +89,19 @@ var mapping = {
 
 Please be cautious if you want to exlucde `common` since other APIs use its functions.
 
+### Test
+`index.html` is the test file. Use `fiddler` or `charles` to set up a proxy for tesing in order to skip cross origin issues:
+
+```
+// example
+http://localhost:8082/*    /project/spec
+http://localhost:8082/path/*    /project/spec   => used for testing cookie domain
+http://localhost:8082/index.js   /project/index.js
+```
+
+Open `http://localhost:8082/path/index.html?key1=a&key2=b#key3=c&key4=d`;
+
 
 ### Changelog
 * v0.5.0 finish basic features and add es6 and es5 support
+* v1.0.0 add test

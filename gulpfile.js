@@ -38,3 +38,7 @@ gulp.task('default', ['es5', 'es6'], (cb) => {
 	console.log("success");
 	cb();
 });
+
+gulp.task('dev', (cb) => {
+	gulp.watch(['src/**/*'], ['default']);
+});

@@ -14,15 +14,15 @@
 export function extend(src, des, d) {
 	var depth = (d) ? d : 0;
 	for (var key in src) {
-		var isObject = isObject(src[key]);
-		var isArray = isArray(src[key]);
-		if (isObject || isArray) {
+		var isObjectVal = isObject(src[key]);
+		var isArrayVal = isArray(src[key]);
+		if (isObjectVal || isArrayVal) {
 			if (depth) {
-				if (isObject) {
+				if (isObjectVal) {
 	    			des[key] = {};
 	    			extend(src[key], des[key], depth - 1);
 	    		}
-	    		else if (isArray) {
+	    		else if (isArrayVal) {
 	    			des[key] = [];
 	    			extend(src[key], des[key], depth - 1);
 	    		}

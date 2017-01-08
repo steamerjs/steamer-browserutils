@@ -26,7 +26,7 @@ export function setItem(key, val){
  */
 export function getItem(key){
     if (typeof(window.Storage) !== 'undefined') {
-        return localStorage.getItem(key) && localStorage.getItem(key);
+        return localStorage.getItem(key);
     } 
     else {
         return getCookie(key);

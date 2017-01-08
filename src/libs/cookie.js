@@ -38,5 +38,5 @@ export function delCookie(key, path, domain) {
 export function getCookie(key) {
 	var r = new RegExp("(?:^|;+|\\s+)" + key + "=([^;]*)");
         var m = window.document.cookie.match(r);
-        return (!m ? "" : m[1]);
+        return (!m ? "" : m[1]) || null;
 }

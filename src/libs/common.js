@@ -24,11 +24,10 @@ export function _stringify(val) {
 
 /**
  * parse string
- * @param  {String} val [vlaue]
+ * @param  {String} val [value]
  * @return {String}     [object value]
  */
 export function _parse(val) {
-	var returnVal = JSON.parse(val);
-	returnVal = isObject(returnVal) ? returnVal : val;
+	var returnVal = isObject(val) ? val : JSON.parse(val);
 	return returnVal;
 }

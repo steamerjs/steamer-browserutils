@@ -4,104 +4,66 @@
  * @date 2016.07.30
  */
 
-/**
- * 获取日期展示
- * @param  {Number} timestamp 日期时间戳
- * @param  {Number} strType 日期显示格式类型，1:[4月21号 星期一 8:00], 2:[2015-7-12 星期一], 3:[07-10 07:30]，所有非当前年份日期显示年份
- * @param  {Number} serverTime 服务器时间
- * @param  {Boolean} noFixTimezone 是否不需要时区校正
- * @return {String}   格式化日期
- */
-var formatDate = (function() {
-    // 修正为北京时间
-    // 8 * 60 GMT+0800 单位为分
-    var timezoneOffsetGMT8 = 8 * 60;
-    // 系统时区 分 (包含夏令时)
-    var timezoneOffset = (new Date()).getTimezoneOffset();
-    // 转换成秒
-    var timezoneDiff = (timezoneOffsetGMT8 + timezoneOffset) * 60;
 
-    function fixTimezone(timestamp, isFormatToDate){
-        // 单位为秒
-        // 北京时间直接返回
-        if (timezoneDiff === 0) return parseInt(timestamp);
-        return parseInt(parseInt(timestamp) + timezoneDiff * (isFormatToDate ? 1 : -1));
+/**      
+ * 对Date的扩展，将 Date 转化为指定格式的String      
+ * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符      
+ * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)      
+ * eg:      
+ * formatDate(new Date(),'yyyy-MM-dd') ==> 2014-03-02
+ * formatDate(new Date(),'yyyy-MM-dd hh:mm') ==> 2014-03-02 05:04
+ * formatDate(new Date(),'yyyy-MM-dd HH:mm') ==> 2014-03-02 17:04
+ * formatDate(new Date(),'yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423      
+ * formatDate(new Date(),'yyyy-MM-dd E HH:mm:ss') ==> 2009-03-10 二 20:09:04      
+ * formatDate(new Date(),'yyyy-MM-dd EE hh:mm:ss') ==> 2009-03-10 周二 08:09:04      
+ * formatDate(new Date(),'yyyy-MM-dd EEE hh:mm:ss') ==> 2009-03-10 星期二 08:09:04      
+ * formatDate(new Date(),'yyyy-M-d h:m:s.S') ==> 2006-7-2 8:9:4.18      
+*/   
+
+var formatDate = function(dt, fmt) { 
+
+    if (!dt) {
+        return;
     }
 
-    function fillZero(number){
-        return ("0"+number).slice(-2,3);
-    }
+    var date = isDate(dt) ? dt : new Date(dt);
 
-    function isYesterday(now, obj) {
-        var yesterdayString = new Date(now.setDate(now.getDate() - 1)).toDateString();
-        return obj.toDateString() === yesterdayString;
-    }
+    var o = {         
+        "M+" : date.getMonth() + 1, //月份         
+        "d+" : date.getDate(), //日         
+        "h+" : date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, //小时         
+        "H+" : date.getHours(), //小时         
+        "m+" : date.getMinutes(), //分         
+        "s+" : date.getSeconds(), //秒         
+        "q+" : Math.floor((date.getMonth() + 3) / 3), //季度         
+        "S" : date.getMilliseconds() //毫秒         
+    };         
+    
+    var week = {         
+        "0" : "\u65e5",         
+        "1" : "\u4e00",         
+        "2" : "\u4e8c",         
+        "3" : "\u4e09",         
+        "4" : "\u56db",         
+        "5" : "\u4e94",         
+        "6" : "\u516d"        
+    };      
 
-    // 1：默认显示日期+时间
-    // 2: 显示日期
-    // 3: 显示时间
-    return (function format(timestamp, strType = 1, serverTime = 0, noFixTimezone = false) {
-        if (!timestamp) {
-            return '';
-        }
+    if (/(y+)/.test(fmt)) {         
+        fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
+    }         
 
-        var weekdaymap = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    if (/(E+)/.test(fmt)) {    
+        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f" : "\u5468") : "")+week[date.getDay()+""]);         
+    }         
+    
+    for (var k in o) {         
+        if (new RegExp("("+ k +")").test(fmt)) {         
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));         
+        }         
+    }         
+    
+    return fmt;         
+};
 
-        var now = serverTime ?
-            (new Date(noFixTimezone ? serverTime :
-                fixTimezone(serverTime, true) * 1000)) :
-            (new Date()),
-            time = new Date(noFixTimezone ? timestamp :
-            fixTimezone(timestamp, true) * 1000);
-
-        var formatTime = fillZero(time.getHours()) + ":" + fillZero(time.getMinutes()),
-            formatDate = "",
-            year = time.getFullYear(),
-            month = time.getMonth() + 1,
-            date = time.getDate();
-
-        var isCurYear = true;
-
-        strType = strType || 1;
-
-        //判断是否今天
-        if (now.getFullYear() === year &&
-            now.getMonth() === time.getMonth() &&
-            now.getDate() === date) {
-            formatDate = "今天";
-        } else if (isYesterday(now, time)) {
-            formatDate = "昨天";
-        } else {
-            // 不是当前年份，都要带上年份显示
-            if (now.getFullYear() !== year) {
-                formatDate = year;
-                isCurYear = false;
-            }
-
-            switch (strType) {
-                case 1:
-                    formatDate = (isCurYear ? formatDate : formatDate + '年') + month + '月' + date + '号';
-                    break;
-                case 2:
-                    formatDate = year + '-' + month + '-' + date;
-                    break;
-                case 3:
-                    formatDate = (isCurYear ? formatDate : formatDate + '-') + fillZero(month) + '-' + fillZero(date);
-                    break;
-            }
-        }
-
-        switch (strType) {
-            // 4月21号 星期一 08:00
-            case 1:
-                return formatDate + ' ' + weekdaymap[time.getDay()] + ' ' + formatTime;
-            // 2015-7-12 星期一
-            case 2:
-                return formatDate + ' ' + weekdaymap[time.getDay()];
-            // 07-10 07:30
-            case 3:
-                return formatDate + ' ' + formatTime;
-        }
-    });
-})();
 export {formatDate};
