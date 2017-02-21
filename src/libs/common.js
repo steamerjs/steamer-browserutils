@@ -12,6 +12,16 @@
  * @date 2016.07.30
  */
 
+// compatible with global
+var global = (typeof global !== "undefined") ? global : {};
+
+if (typeof window !== "undefined") {
+    global = window;
+} 
+else if (typeof self !== "undefined"){
+    global = self;
+}
+
 /**
  * stringify value
  * @param  {String} val [value]

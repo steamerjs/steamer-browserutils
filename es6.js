@@ -12,6 +12,16 @@
  * @date 2016.07.30
  */
 
+// compatible with global
+var global = (typeof global !== "undefined") ? global : {};
+
+if (typeof window !== "undefined") {
+    global = window;
+} 
+else if (typeof self !== "undefined"){
+    global = self;
+}
+
 /**
  * stringify value
  * @param  {String} val [value]
@@ -84,7 +94,9 @@ export function extend(src, des, d) {
 export function setCookie(key, val, days, path, domain) {
 	var expire = new Date();
 	expire.setTime(expire.getTime() + (days ? 3600000 * 24 * days : 30 * 24 * 60 * 60 * 1000)); // 默认1个月
-	document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	if (global.document) {
+		document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	}
 }
 
 /**
@@ -95,7 +107,9 @@ export function setCookie(key, val, days, path, domain) {
  */
 export function delCookie(key, path, domain) {
 	var expires = new Date(0);
-	document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	if (global.document) {
+		document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	}
 }
 
 /**
@@ -105,8 +119,11 @@ export function delCookie(key, path, domain) {
  */
 export function getCookie(key) {
 	var r = new RegExp("(?:^|;+|\\s+)" + key + "=([^;]*)");
-        var m = window.document.cookie.match(r);
-        return (!m ? "" : m[1]) || null;
+    var m = '';
+    if (global.document) {
+    	m = global.document.cookie.match(r);
+    }
+    return (!m ? "" : m[1]) || null;
 }
 /**
  * @date functions
@@ -190,7 +207,7 @@ export {formatDate};
  */
 export function setItem(key, val){
     val = _stringify(val);
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         localStorage.setItem(key,val);
     } 
     else {
@@ -204,7 +221,7 @@ export function setItem(key, val){
  * @return {String}     [value]
  */
 export function getItem(key){
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         return localStorage.getItem(key);
     } 
     else {
@@ -218,7 +235,7 @@ export function getItem(key){
  * @return {String}     [value]
  */
 export function delItem(key) {
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         delete localStorage[key];
     } 
     else {
@@ -232,6 +249,11 @@ export function delItem(key) {
  */
 
 export function callApi(url) {
+
+	if (!global.document) {
+		return;
+	}
+
 	var iframe = document.createElement('iframe');
 	iframe.src = url;
 	iframe.height = 0;
@@ -351,7 +373,11 @@ export function isError(obj) {
  * @return {String}     [value]
  */
 export function getHash(key) {
-    var m = window.location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+    var m = "",
+    	location = global.location;
+    if (location) {
+    	m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+    }
     return !m ? "" : decodeURIComponent(m[2]);
 }
 
@@ -361,7 +387,11 @@ export function getHash(key) {
  * @return {String}     [value]
  */
 export function getQuery(key) {
-    var m = window.location.search.match(new RegExp('(\\?|&)'+ key + '=([^&]*)(#|&|$)'));
+    var m = "",
+    	location = global.location;
+    if (location) {
+    	m = location.search.match(new RegExp('(\\?|&)'+ key + '=([^&]*)(#|&|$)'));
+    }
     return !m ? "":decodeURIComponent(m[2]);
 }
 
@@ -371,10 +401,15 @@ export function getQuery(key) {
  * @return {String}     [value]
  */
 export function getUrlParam(key) {
-	var m = window.location.search.match(new RegExp('(\\?|#|&)'+ key + '=([^&]*)(#|&|$)'));
+	var m = "",
+		location = global.location;
+
+	if (location) {
+		m = location.search.match(new RegExp('(\\?|#|&)'+ key + '=([^&]*)(#|&|$)'));
+	}
     
-    if (!m) {
-    	m = window.location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+    if (!m && location) {
+    	m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
 
     return !m ? "":decodeURIComponent(m[2]);

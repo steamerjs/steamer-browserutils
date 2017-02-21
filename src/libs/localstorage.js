@@ -11,7 +11,7 @@
  */
 export function setItem(key, val){
     val = _stringify(val);
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         localStorage.setItem(key,val);
     } 
     else {
@@ -25,7 +25,7 @@ export function setItem(key, val){
  * @return {String}     [value]
  */
 export function getItem(key){
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         return localStorage.getItem(key);
     } 
     else {
@@ -39,7 +39,7 @@ export function getItem(key){
  * @return {String}     [value]
  */
 export function delItem(key) {
-    if (typeof(window.Storage) !== 'undefined') {
+    if (typeof(global.Storage) !== 'undefined') {
         delete localStorage[key];
     } 
     else {

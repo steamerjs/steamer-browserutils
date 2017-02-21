@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 exports.__esModule = true;
 exports._stringify = _stringify;
@@ -39,6 +39,15 @@ exports.getUrlParam = getUrlParam;
  * @author heyli
  * @date 2016.07.30
  */
+
+// compatible with global
+var global = typeof global !== "undefined" ? global : {};
+
+if (typeof window !== "undefined") {
+  global = window;
+} else if (typeof self !== "undefined") {
+  global = self;
+}
 
 /**
  * stringify value
@@ -109,7 +118,9 @@ function extend(src, des, d) {
 function setCookie(key, val, days, path, domain) {
   var expire = new Date();
   expire.setTime(expire.getTime() + (days ? 3600000 * 24 * days : 30 * 24 * 60 * 60 * 1000)); // 默认1个月
-  document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
+  if (global.document) {
+    document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
+  }
 }
 
 /**
@@ -120,7 +131,9 @@ function setCookie(key, val, days, path, domain) {
  */
 function delCookie(key, path, domain) {
   var expires = new Date(0);
-  document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
+  if (global.document) {
+    document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
+  }
 }
 
 /**
@@ -130,7 +143,10 @@ function delCookie(key, path, domain) {
  */
 function getCookie(key) {
   var r = new RegExp("(?:^|;+|\\s+)" + key + "=([^;]*)");
-  var m = window.document.cookie.match(r);
+  var m = '';
+  if (global.document) {
+    m = global.document.cookie.match(r);
+  }
   return (!m ? "" : m[1]) || null;
 }
 /**
@@ -174,13 +190,13 @@ var formatDate = function formatDate(dt, fmt) {
   };
 
   var week = {
-    "0": '日',
-    "1": '一',
-    "2": '二',
-    "3": '三',
-    "4": '四',
-    "5": '五',
-    "6": '六'
+    "0": "\u65E5",
+    "1": "\u4E00",
+    "2": "\u4E8C",
+    "3": "\u4E09",
+    "4": "\u56DB",
+    "5": "\u4E94",
+    "6": "\u516D"
   };
 
   if (/(y+)/.test(fmt)) {
@@ -188,7 +204,7 @@ var formatDate = function formatDate(dt, fmt) {
   }
 
   if (/(E+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length > 1 ? RegExp.$1.length > 2 ? '星期' : '周' : "") + week[date.getDay() + ""]);
+    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length > 1 ? RegExp.$1.length > 2 ? "\u661F\u671F" : "\u5468" : "") + week[date.getDay() + ""]);
   }
 
   for (var k in o) {
@@ -215,7 +231,7 @@ exports.formatDate = formatDate;
 
 function setItem(key, val) {
   val = _stringify(val);
-  if (typeof window.Storage !== 'undefined') {
+  if (typeof global.Storage !== 'undefined') {
     localStorage.setItem(key, val);
   } else {
     setCookie(key, val);
@@ -228,7 +244,7 @@ function setItem(key, val) {
  * @return {String}     [value]
  */
 function getItem(key) {
-  if (typeof window.Storage !== 'undefined') {
+  if (typeof global.Storage !== 'undefined') {
     return localStorage.getItem(key);
   } else {
     return getCookie(key);
@@ -241,7 +257,7 @@ function getItem(key) {
  * @return {String}     [value]
  */
 function delItem(key) {
-  if (typeof window.Storage !== 'undefined') {
+  if (typeof global.Storage !== 'undefined') {
     delete localStorage[key];
   } else {
     delCookie(key);
@@ -254,6 +270,11 @@ function delItem(key) {
  */
 
 function callApi(url) {
+
+  if (!global.document) {
+    return;
+  }
+
   var iframe = document.createElement('iframe');
   iframe.src = url;
   iframe.height = 0;
@@ -370,7 +391,11 @@ function isError(obj) {
  * @return {String}     [value]
  */
 function getHash(key) {
-  var m = window.location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+  var m = "",
+      location = global.location;
+  if (location) {
+    m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+  }
   return !m ? "" : decodeURIComponent(m[2]);
 }
 
@@ -380,7 +405,11 @@ function getHash(key) {
  * @return {String}     [value]
  */
 function getQuery(key) {
-  var m = window.location.search.match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
+  var m = "",
+      location = global.location;
+  if (location) {
+    m = location.search.match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
+  }
   return !m ? "" : decodeURIComponent(m[2]);
 }
 
@@ -390,10 +419,15 @@ function getQuery(key) {
  * @return {String}     [value]
  */
 function getUrlParam(key) {
-  var m = window.location.search.match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
+  var m = "",
+      location = global.location;
 
-  if (!m) {
-    m = window.location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+  if (location) {
+    m = location.search.match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
+  }
+
+  if (!m && location) {
+    m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
   }
 
   return !m ? "" : decodeURIComponent(m[2]);

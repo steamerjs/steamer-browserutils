@@ -105,3 +105,4 @@ Open `http://localhost:8082/path/index.html?key1=a&key2=b#key3=c&key4=d`;
 ### Changelog
 * v0.5.0 finish basic features and add es6 and es5 support
 * v1.0.0 add test
+* v1.0.1 compatible with global

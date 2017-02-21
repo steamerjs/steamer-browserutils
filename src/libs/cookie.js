@@ -16,7 +16,9 @@
 export function setCookie(key, val, days, path, domain) {
 	var expire = new Date();
 	expire.setTime(expire.getTime() + (days ? 3600000 * 24 * days : 30 * 24 * 60 * 60 * 1000)); // 默认1个月
-	document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	if (global.document) {
+		document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	}
 }
 
 /**
@@ -27,7 +29,9 @@ export function setCookie(key, val, days, path, domain) {
  */
 export function delCookie(key, path, domain) {
 	var expires = new Date(0);
-	document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	if (global.document) {
+		document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? ('domain=' + domain + ';') : '');
+	}
 }
 
 /**
@@ -37,6 +41,9 @@ export function delCookie(key, path, domain) {
  */
 export function getCookie(key) {
 	var r = new RegExp("(?:^|;+|\\s+)" + key + "=([^;]*)");
-        var m = window.document.cookie.match(r);
-        return (!m ? "" : m[1]) || null;
+    var m = '';
+    if (global.document) {
+    	m = global.document.cookie.match(r);
+    }
+    return (!m ? "" : m[1]) || null;
 }

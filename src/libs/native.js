@@ -5,6 +5,11 @@
  */
 
 export function callApi(url) {
+
+	if (!global.document) {
+		return;
+	}
+
 	var iframe = document.createElement('iframe');
 	iframe.src = url;
 	iframe.height = 0;
