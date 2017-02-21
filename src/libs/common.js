@@ -2,8 +2,8 @@
  * steamer-browserutils
  * github: https://github.com/SteamerTeam/steamer-browserutils
  * npm: https://www.npmjs.com/package/steamer-browserutils
- * version: 0.5.0
- * date: 2016.07.30
+ * version: 1.0.0
+ * date: 2017.01.10
  */
 
 /**
