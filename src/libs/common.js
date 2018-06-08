@@ -11,14 +11,17 @@
  * @author heyli
  * @date 2016.07.30
  */
+import {
+    isObject
+} from './type';
 
 // compatible with global
-var global = (typeof global !== "undefined") ? global : {};
+let global = (typeof global !== 'undefined') ? global : {};
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
     global = window;
-} 
-else if (typeof self !== "undefined"){
+}
+else if (typeof self !== 'undefined') {
     global = self;
 }
 
@@ -28,8 +31,8 @@ else if (typeof self !== "undefined"){
  * @return {String}     [stringified value]
  */
 export function _stringify(val) {
-	var returnVal = isObject(val) ? JSON.stringify(val) : val;
-	return returnVal;
+    let returnVal = isObject(val) ? JSON.stringify(val) : val;
+    return returnVal;
 }
 
 /**
@@ -38,6 +41,6 @@ export function _stringify(val) {
  * @return {String}     [object value]
  */
 export function _parse(val) {
-	var returnVal = isObject(val) ? val : JSON.parse(val);
-	return returnVal;
+    let returnVal = isObject(val) ? val : JSON.parse(val);
+    return returnVal;
 }

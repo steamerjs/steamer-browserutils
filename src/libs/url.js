@@ -10,12 +10,12 @@
  * @return {String}     [value]
  */
 export function getHash(key) {
-    var m = "",
-    	location = global.location;
+    let m = '';
+    let location = global.location;
     if (location) {
-    	m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
-    return !m ? "" : decodeURIComponent(m[2]);
+    return !m ? '' : decodeURIComponent(m[2]);
 }
 
 /**
@@ -24,12 +24,12 @@ export function getHash(key) {
  * @return {String}     [value]
  */
 export function getQuery(key) {
-    var m = "",
-    	location = global.location;
+    let m = '';
+    let location = global.location;
     if (location) {
-    	m = location.search.match(new RegExp('(\\?|&)'+ key + '=([^&]*)(#|&|$)'));
+        m = location.search.match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
     }
-    return !m ? "":decodeURIComponent(m[2]);
+    return !m ? '' : decodeURIComponent(m[2]);
 }
 
 /**
@@ -38,16 +38,16 @@ export function getQuery(key) {
  * @return {String}     [value]
  */
 export function getUrlParam(key) {
-	var m = "",
-		location = global.location;
+    let m = '';
+    let location = global.location;
 
-	if (location) {
-		m = location.search.match(new RegExp('(\\?|#|&)'+ key + '=([^&]*)(#|&|$)'));
-	}
-    
-    if (!m && location) {
-    	m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+    if (location) {
+        m = location.search.match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
     }
 
-    return !m ? "":decodeURIComponent(m[2]);
+    if (!m && location) {
+        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+    }
+
+    return !m ? '' : decodeURIComponent(m[2]);
 }
