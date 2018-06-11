@@ -50,10 +50,15 @@ For usage details, you can checkout `./src/libs/`
 You can require the file like this:
 ```
 // Node
-var utils = require('steamer-browserutils');
+let utils = require('steamer-browserutils');
+// or
+let utils = require('steamer-browserutils/dist/index.cjs.js); 
 
 // ES6
-import { extend, isType } from 'steamer-browserutils';
+import { extend, isType } from 'steamer-browserutils/dist/index.esm.js';
+
+// umd
+// you can use index.umd.js
 ```
 
 By default, we require `steamer-browserutils/index.js` which is an `es5` version. However, sometimes you may need `es6` version for tree-shaking in `webpack` or `rollup`, then you can explicitly require `steamer-browserutils/index.esm.js`.
