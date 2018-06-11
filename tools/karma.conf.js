@@ -106,11 +106,7 @@ module.exports = function(config) {
 
         urlRoot: '/path/',
 
-        customHeaders: [{
-            match: 'context.html',
-            name: 'Location',
-            value: '/path/context.html?key1=a&key2=b#key3=c&key4=d'
-        }]
+        singleRun: true,
 
         // rollupPreprocessor: {
         //     input: 'src/main.js',

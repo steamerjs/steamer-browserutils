@@ -192,7 +192,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm'));
 
-        expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm')).to.eql('2017-01-08 06:34');
+        expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm')).to.eql('2017-01-08 10:33');
 
     });
 
@@ -202,7 +202,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S'));
 
-        expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S')).to.eql('2017-01-08 06:34:54.534');
+        expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S')).to.eql('2017-01-08 10:33:31.237');
 
     });
 
@@ -212,7 +212,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss'));
 
-        expect(formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss')).to.eql('2017-01-08 日 18:34:54');
+        expect(formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss')).to.eql('2017-01-08 日 10:33:31');
 
     });
 
@@ -222,7 +222,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss'));
 
-        expect(formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss')).to.eql('2017-01-08 周日 06:34:54');
+        expect(formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss')).to.eql('2017-01-08 周日 10:33:31');
 
     });
 
@@ -232,7 +232,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss'));
 
-        expect(formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss')).to.eql('2017-01-08 星期日 06:34:54');
+        expect(formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss')).to.eql('2017-01-08 星期日 10:33:31');
 
     });
 
@@ -242,7 +242,7 @@ describe('date', function() {
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-M-d h:m:s.S'));
 
-        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 6:34:54.534');
+        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 10:33:31.237');
 
     });
 
