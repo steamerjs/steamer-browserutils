@@ -11,7 +11,8 @@
     "start": "npm run dev",
     "lint": "eslint src",
     "test": "cross-env BABEL_ENV=test NODE_ENV=production KARMA_ENV=karma node ./tools/script.js",
-    "pretest": "npm run lint && npm run dist"
+    "pretest": "npm run lint && npm run dist",
+    "travis": "npm run test"
   },
   "files": [
     "dist",
