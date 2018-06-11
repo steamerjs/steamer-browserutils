@@ -1,6 +1,11 @@
 ## steamer-browserutils
 Browser utils for development
 
+[![NPM Version](https://img.shields.io/npm/v/steamer-browserutils.svg?style=flat)](https://www.npmjs.com/package/steamer-browserutils)
+[![Travis](https://img.shields.io/travis/steamerjs/steamer-browserutils.svg)](https://travis-ci.org/steamerjs/steamer-browserutils)
+[![Deps](https://david-dm.org/steamerjs/steamer-browserutils.svg)](https://david-dm.org/steamerjs/steamer-browserutils)
+[![Coverage](https://img.shields.io/coveralls/steamerjs/steamer-browserutils.svg)](https://coveralls.io/github/steamerjs/steamer-browserutils)
+
 
 ### Functions
 For usage details, you can checkout `./src/libs/`
