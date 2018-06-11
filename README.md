@@ -3,7 +3,7 @@ Browser utils for development
 
 
 ### Functions
-For usage details, you can checkout `es.js`
+For usage details, you can checkout `./src/libs/`
 ####
 * class
 	- extend
@@ -51,9 +51,9 @@ var utils = require('steamer-browserutils');
 import { extend, isType } from 'steamer-browserutils';
 ```
 
-By default, we require `steamer-browserutils/index.js` which is an `es5` version. However, sometimes you may need `es6` version for tree-shaking in `webpack2.0` or `rollup`, then you can explicitly require `steamer-browserutils/es.js`.
+By default, we require `steamer-browserutils/index.js` which is an `es5` version. However, sometimes you may need `es6` version for tree-shaking in `webpack` or `rollup`, then you can explicitly require `steamer-browserutils/index.esm.js`.
 
-You also need to notice that compling tool like `webpack` may exclude `node_modules` when compling js files in order to speed up the whole compling process. If so, please remove this config or just put `es6.js` in your `src` folder.
+You also need to notice that compling tool like `webpack` may exclude `node_modules` when compling js files in order to speed up the whole compling process. If so, please remove this config or just put `./dist/index.esm.js` in your `src` folder.
 ```
 { 
     test: /\.js?$/,
@@ -71,38 +71,28 @@ You also need to notice that compling tool like `webpack` may exclude `node_modu
 ```
 
 ### Customized library
-If you hope to customized certain types of APIs. For example, if you hope to exclude `url` and `type` APIs, you can modify gulpfile.js by commenting `url` and `type` keys of `mapping` object; Then run `gulp`, you will get a customized version.
+If you hope to customized certain types of APIs. For example, if you hope to exclude `safe` and `native` APIs, you can modify `./src/mains`.js by commenting `safe` and `natve` `export`.
 
 ```
-var mapping = {
-	'common': './src/libs/common.js',
-	'class': './src/libs/class.js',
-	'cookie': './src/libs/cookie.js',
-	'date': './src/libs/date.js',
-	'localstorage': './src/libs/localstorage.js',
-	'native': './src/libs/native.js',
-	'safe': './src/libs/safe.js',
-	// 'type': './src/libs/type.js',
-	// 'url': './src/libs/url.js',
-};
+// export {
+//     callApi,
+// } from './libs/native';
+// export {
+//     encodeHTML,
+//     decodeHTML
+// } from './libs/safe';
 ```
 
 Please be cautious if you want to exlucde `common` since other APIs use its functions.
 
 ### Test
-`index.html` is the test file. Use `fiddler` or `charles` to set up a proxy for tesing in order to skip cross origin issues:
-
+```javascript
+npm test
 ```
-// example
-http://localhost:8082/*    /project/spec
-http://localhost:8082/path/*    /project/spec   => used for testing cookie domain
-http://localhost:8082/index.js   /project/index.js
-```
-
-Open `http://localhost:8082/path/index.html?key1=a&key2=b#key3=c&key4=d`;
 
 
 ### Changelog
 * v0.5.0 finish basic features and add es6 and es5 support
 * v1.0.0 add test
 * v1.0.1 compatible with global
+* v1.0.2 use rollup to bundle
