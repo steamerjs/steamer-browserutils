@@ -5,6 +5,12 @@
  */
 import global from './gb';
 
+let util = {
+    _getHash: () => global.location.hash,
+    _getSearch: () => global.location.search
+};
+export default util;
+
 /**
  * get hash param
  * @param  {String} key [key]
@@ -14,7 +20,7 @@ export function getHash(key) {
     let m = '';
     let location = global.location;
     if (location) {
-        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+        m = util._getHash().match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
     return !m ? '' : decodeURIComponent(m[2]);
 }
@@ -28,7 +34,7 @@ export function getQuery(key) {
     let m = '';
     let location = global.location;
     if (location) {
-        m = location.search.match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
+        m = util._getSearch().match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
     }
     return !m ? '' : decodeURIComponent(m[2]);
 }
@@ -43,11 +49,11 @@ export function getUrlParam(key) {
     let location = global.location;
 
     if (location) {
-        m = location.search.match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
+        m = util._getSearch().match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
     }
 
     if (!m && location) {
-        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+        m = util._getHash().match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
 
     return !m ? '' : decodeURIComponent(m[2]);

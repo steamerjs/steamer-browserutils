@@ -26,6 +26,7 @@ import {
     getQuery,
     getUrlParam
 } from '../src/main';
+import urlLib from '../src/libs/url';
 
 describe('class', function() {
 
@@ -155,7 +156,7 @@ describe('cookie', function() {
             }
         };
 
-        setCookie('key1', src, 1, '/', 'localhost');
+        setCookie('key1', src, 1, '/path/', 'localhost');
 
         expect(getCookie('key1')).to.eql(encodeURIComponent(_stringify(src)));
 
@@ -452,38 +453,55 @@ describe('type', function() {
 
 });
 
-// describe('url', function() {
+describe('url', function() {
 
-//     it('getHash', function() {
+    let urlSearchStub = null;
+    let urlHashStub = null;
 
-//         let param = getHash('key3');
+    before(() => {
+        urlSearchStub = sinon.stub(urlLib, '_getSearch').callsFake(() => {
+            return '?key1=a&key2=b';
+        });
+        urlHashStub = sinon.stub(urlLib, '_getHash').callsFake(() => {
+            return '#key3=c&key4=d';
+        });
+    });
 
-//         expect(param).to.eql('c');
+    after(() => {
+        urlSearchStub.restore();
+        urlHashStub.restore();
+    });
 
-//     });
+    it('getHash', function() {
 
-//     it('getQuery', function() {
+        let param = getHash('key3');
 
-//         let param = getQuery('key1');
+        expect(param).to.eql('c');
 
-//         expect(param).to.eql('a');
+    });
 
-//     });
+    it('getQuery', function() {
 
-//     it('getUrlParam for query', function() {
+        let param = getQuery('key1');
 
-//         let param = getUrlParam('key2');
+        expect(param).to.eql('a');
 
-//         expect(param).to.eql('b');
+    });
 
-//     });
+    it('getUrlParam for query', function() {
 
-//     it('getUrlParam for hash', function() {
+        let param = getUrlParam('key2');
 
-//         let param = getUrlParam('key4');
+        expect(param).to.eql('b');
 
-//         expect(param).to.eql('d');
+    });
 
-//     });
+    it('getUrlParam for hash', function() {
 
-// });
+        let param = getUrlParam('key4');
+
+        expect(param).to.eql('d');
+
+    });
+
+});

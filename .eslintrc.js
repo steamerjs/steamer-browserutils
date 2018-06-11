@@ -11,6 +11,9 @@ module.exports = {
         "global": true,
         "describe": true,
         "it": true,
-        "expect": true
+        "expect": true,
+        "before": true,
+        "after": true,
+        "sinon": true
     }
 };

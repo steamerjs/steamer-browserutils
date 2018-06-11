@@ -54,27 +54,28 @@ function isError(obj) {
  * [extend object]
  * @param  {Object} src [src object]
  * @param  {Object} des [extended object]
- * @param  {Integer} d   [depth]
+ * @param  {Integer} dep   [depth]
  */
-function extend(src, des, d) {
-    var depth = d ? d : 0;
+function extend(src, des) {
+    var dep = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
     for (var key in src) {
         if (src.hasOwnProperty(key)) {
             var isObjectVal = isObject(src[key]);
             var isArrayVal = isArray(src[key]);
             if (isObjectVal || isArrayVal) {
-                if (depth) {
+                if (dep) {
                     if (isObjectVal) {
                         des[key] = {};
-                        extend(src[key], des[key], depth - 1);
+                        extend(src[key], des[key], dep - 1);
                     } else if (isArrayVal) {
                         des[key] = [];
-                        extend(src[key], des[key], depth - 1);
+                        extend(src[key], des[key], dep - 1);
                     }
                 }
+            } else {
+                des[key] = src[key];
             }
-        } else {
-            des[key] = src[key];
         }
     }
 }
@@ -93,9 +94,30 @@ function extend(src, des, d) {
  * @return {String}     [stringified value]
  */
 function _stringify(val) {
-    var returnVal = isObject(val) ? JSON.stringify(val) : val;
-    return returnVal;
+  var returnVal = isObject(val) ? JSON.stringify(val) : val;
+  return returnVal;
 }
+
+/**
+ * parse string
+ * @param  {String} val [value]
+ * @return {String}     [object value]
+ */
+function _parse(val) {
+  var returnVal = isObject(val) ? val : JSON.parse(val);
+  return returnVal;
+}
+
+// compatible with global
+var global = typeof global !== 'undefined' ? global : {};
+
+if (typeof window !== 'undefined') {
+    global = window;
+} else if (typeof self !== 'undefined') {
+    global = self;
+}
+
+var global$1 = global;
 
 /**
  * @description Browser cookie processing
@@ -115,7 +137,7 @@ function _stringify(val) {
 function setCookie(key, val, days, path, domain) {
     var expire = new Date();
     expire.setTime(expire.getTime() + (days ? 3600000 * 24 * days : 30 * 24 * 60 * 60 * 1000)); // 默认1个月
-    if (global.document) {
+    if (global$1.document) {
         document.cookie = key + '=' + encodeURIComponent(_stringify(val)) + ';expires=' + expire.toGMTString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
     }
 }
@@ -128,7 +150,7 @@ function setCookie(key, val, days, path, domain) {
  */
 function delCookie(key, path, domain) {
     var expires = new Date(0);
-    if (global.document) {
+    if (global$1.document) {
         document.cookie = key + '=;expires=' + expires.toUTCString() + ';path=' + (path ? path : '/') + ';' + (domain ? 'domain=' + domain + ';' : '');
     }
 }
@@ -141,8 +163,8 @@ function delCookie(key, path, domain) {
 function getCookie(key) {
     var r = new RegExp('(?:^|;+|\\s+)' + key + '=([^;]*)');
     var m = '';
-    if (global.document) {
-        m = global.document.cookie.match(r);
+    if (global$1.document) {
+        m = global$1.document.cookie.match(r);
     }
     return (!m ? '' : m[1]) || null;
 }
@@ -153,12 +175,13 @@ function getCookie(key) {
  * @date 2016.07.30
  */
 
-function formatDate(dt, fmt) {
+function formatDate(dt, format) {
 
     if (!dt) {
         return;
     }
 
+    var fmt = format;
     var date = isDate(dt) ? dt : new Date(dt);
 
     var o = {
@@ -182,23 +205,21 @@ function formatDate(dt, fmt) {
         '6': '\u516D'
     };
 
-    var format = '';
-
     if (/(y+)/.test(fmt)) {
-        format = fmt.replace(RegExp.$1, String(date.getFullYear()).substr(4 - RegExp.$1.length));
+        fmt = fmt.replace(RegExp.$1, String(date.getFullYear()).substr(4 - RegExp.$1.length));
     }
 
     if (/(E+)/.test(fmt)) {
-        format = fmt.replace(RegExp.$1, (RegExp.$1.length > 1 ? RegExp.$1.length > 2 ? '\u661F\u671F' : '\u5468' : '') + week[String(date.getDay())]);
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length > 1 ? RegExp.$1.length > 2 ? '\u661F\u671F' : '\u5468' : '') + week[String(date.getDay())]);
     }
 
     for (var k in o) {
         if (new RegExp('(' + k + ')').test(fmt)) {
-            format = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(String(o[k]).length));
+            fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(String(o[k]).length));
         }
     }
 
-    return format;
+    return fmt;
 }
 
 /**
@@ -214,7 +235,7 @@ function formatDate(dt, fmt) {
  */
 function setItem(key, v) {
     var val = _stringify(v);
-    if (typeof global.Storage !== 'undefined') {
+    if (typeof global$1.Storage !== 'undefined') {
         localStorage.setItem(key, val);
     } else {
         setCookie(key, val);
@@ -227,7 +248,7 @@ function setItem(key, v) {
  * @return {String}     [value]
  */
 function getItem(key) {
-    if (typeof global.Storage !== 'undefined') {
+    if (typeof global$1.Storage !== 'undefined') {
         return localStorage.getItem(key);
     } else {
         return getCookie(key);
@@ -240,7 +261,7 @@ function getItem(key) {
  * @return {String}     [value]
  */
 function delItem(key) {
-    if (typeof global.Storage !== 'undefined') {
+    if (typeof global$1.Storage !== 'undefined') {
         delete localStorage[key];
     } else {
         delCookie(key);
@@ -255,7 +276,7 @@ function delItem(key) {
 
 function callApi(url) {
 
-    if (!global.document) {
+    if (!global$1.document) {
         return;
     }
 
@@ -288,7 +309,7 @@ function encodeHTML(str) {
   // &gt; 实体标签
   // &#34; Unicode 编码（可以用charCodeAt方法查看某字符对应的unicode编码）
   var s = '';
-  if (!str || str.length == 0) return '';
+  if (!str || str.length === 0) return '';
   s = str.replace(/&/g, '&#38;');
   s = s.replace(/</g, '&lt;');
   s = s.replace(/>/g, '&gt;');
@@ -307,7 +328,7 @@ function encodeHTML(str) {
  */
 function decodeHTML(str) {
   var s = '';
-  if (str.length == 0) return '';
+  if (str.length === 0) return '';
   s = str.replace(/&#38;/g, '&');
   s = s.replace(/&lt;/g, '<');
   s = s.replace(/&gt;/g, '>');
@@ -324,6 +345,15 @@ function decodeHTML(str) {
  * @date 2016.07.30
  */
 
+var util = {
+    _getHash: function _getHash() {
+        return global$1.location.hash;
+    },
+    _getSearch: function _getSearch() {
+        return global$1.location.search;
+    }
+};
+
 /**
  * get hash param
  * @param  {String} key [key]
@@ -331,9 +361,9 @@ function decodeHTML(str) {
  */
 function getHash(key) {
     var m = '';
-    var location = global.location;
+    var location = global$1.location;
     if (location) {
-        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+        m = util._getHash().match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
     return !m ? '' : decodeURIComponent(m[2]);
 }
@@ -345,9 +375,9 @@ function getHash(key) {
  */
 function getQuery(key) {
     var m = '';
-    var location = global.location;
+    var location = global$1.location;
     if (location) {
-        m = location.search.match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
+        m = util._getSearch().match(new RegExp('(\\?|&)' + key + '=([^&]*)(#|&|$)'));
     }
     return !m ? '' : decodeURIComponent(m[2]);
 }
@@ -359,17 +389,17 @@ function getQuery(key) {
  */
 function getUrlParam(key) {
     var m = '';
-    var location = global.location;
+    var location = global$1.location;
 
     if (location) {
-        m = location.search.match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
+        m = util._getSearch().match(new RegExp('(\\?|#|&)' + key + '=([^&]*)(#|&|$)'));
     }
 
     if (!m && location) {
-        m = location.hash.match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
+        m = util._getHash().match(new RegExp('(#|&)' + key + '=([^&#]*)(#|&|$)'));
     }
 
     return !m ? '' : decodeURIComponent(m[2]);
 }
 
-export { extend, setCookie, delCookie, getCookie, formatDate, setItem, getItem, delItem, callApi, encodeHTML, decodeHTML, isType, isBoolean, isNumber, isString, isFunction, isArray, isDate, isRegExp, isObject, isError, getHash, getUrlParam, getQuery };
+export { extend, setCookie, delCookie, getCookie, formatDate, setItem, getItem, delItem, callApi, encodeHTML, decodeHTML, isType, isBoolean, isNumber, isString, isFunction, isArray, isDate, isRegExp, isObject, isError, getHash, getUrlParam, getQuery, _stringify, _parse };

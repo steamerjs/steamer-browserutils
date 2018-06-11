@@ -1,7 +1,16 @@
+/**
+ * @see https://github.com/pvdlg/karma-rollup-preprocessor
+ */
+
 const path = require('path');
 // const pkg = require('../package.json');
 const babel = require('rollup-plugin-babel');
 const istanbul = require('rollup-plugin-istanbul');
+
+let browsers = ['Chrome'];
+if (process.env.TRAVIS) {
+    browsers = ['Chrome_travis_ci'];
+}
 
 module.exports = function(config) {
     config.set({
@@ -31,7 +40,14 @@ module.exports = function(config) {
         // 设定要使用的 frameworks
         frameworks: ['mocha', 'sinon-chai'],
 
-        browsers: ['Chrome'],
+        browsers: browsers,
+
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
 
         // 设定报告输出插件： spec 和 coverage-istanbul
         reporters: ['spec', 'coverage-istanbul'],
@@ -64,7 +80,7 @@ module.exports = function(config) {
                     },
                     plugins: [
                         istanbul({
-                            exclude: ['test/*.js']
+                            exclude: ['test/*.js', 'src/libs/gb.js']
                         }),
                         babel({ presets: [['es2015', { modules: false }]] }),
                     ]
@@ -87,6 +103,14 @@ module.exports = function(config) {
                 }
             }
         },
+
+        urlRoot: '/path/',
+
+        customHeaders: [{
+            match: 'context.html',
+            name: 'Location',
+            value: '/path/context.html?key1=a&key2=b#key3=c&key4=d'
+        }]
 
         // rollupPreprocessor: {
         //     input: 'src/main.js',
