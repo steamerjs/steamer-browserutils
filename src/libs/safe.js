@@ -13,7 +13,7 @@ export function encodeHTML(str) {
     // &gt; 实体标签
     // &#34; Unicode 编码（可以用charCodeAt方法查看某字符对应的unicode编码）
     let s = '';
-    if (!str || str.length == 0) return '';
+    if (!str || str.length === 0) return '';
     s = str.replace(/&/g, '&#38;');
     s = s.replace(/</g, '&lt;');
     s = s.replace(/>/g, '&gt;');
@@ -32,7 +32,7 @@ export function encodeHTML(str) {
  */
 export function decodeHTML(str) {
     let s = '';
-    if (str.length == 0) return '';
+    if (str.length === 0) return '';
     s = str.replace(/&#38;/g, '&');
     s = s.replace(/&lt;/g, '<');
     s = s.replace(/&gt;/g, '>');

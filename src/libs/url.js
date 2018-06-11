@@ -3,6 +3,7 @@
  * @author heyli
  * @date 2016.07.30
  */
+import global from './gb';
 
 /**
  * get hash param

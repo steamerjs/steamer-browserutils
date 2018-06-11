@@ -23,12 +23,13 @@ import {
     isDate
 } from './type';
 
-export function formatDate(dt, fmt) {
+export function formatDate(dt, format) {
 
     if (!dt) {
         return;
     }
 
+    let fmt = format;
     let date = isDate(dt) ? dt : new Date(dt);
 
     let o = {
@@ -52,21 +53,19 @@ export function formatDate(dt, fmt) {
         '6': '\u516d'
     };
 
-    let format = '';
-
     if (/(y+)/.test(fmt)) {
-        format = fmt.replace(RegExp.$1, (String(date.getFullYear())).substr(4 - RegExp.$1.length));
+        fmt = fmt.replace(RegExp.$1, (String(date.getFullYear())).substr(4 - RegExp.$1.length));
     }
 
     if (/(E+)/.test(fmt)) {
-        format = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '\u661f\u671f' : '\u5468') : '') + week[String(date.getDay())]);
+        fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '\u661f\u671f' : '\u5468') : '') + week[String(date.getDay())]);
     }
 
     for (let k in o) {
         if (new RegExp('(' + k + ')').test(fmt)) {
-            format = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr((String(o[k])).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr((String(o[k])).length)));
         }
     }
 
-    return format;
+    return fmt;
 }

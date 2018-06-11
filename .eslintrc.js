@@ -8,6 +8,9 @@ module.exports = {
         "no-use-before-define": 'off'
     },
     "globals": {
-        "global": true
+        "global": true,
+        "describe": true,
+        "it": true,
+        "expect": true
     }
 };

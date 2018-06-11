@@ -11,6 +11,7 @@ import {
 import {
     _stringify
 } from './common';
+import global from './gb';
 
 /**
  * set localstorage

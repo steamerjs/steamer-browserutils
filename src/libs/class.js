@@ -12,29 +12,28 @@ import {
  * [extend object]
  * @param  {Object} src [src object]
  * @param  {Object} des [extended object]
- * @param  {Integer} d   [depth]
+ * @param  {Integer} dep   [depth]
  */
-export function extend(src, des, d) {
-    let depth = (d) ? d : 0;
+export function extend(src, des, dep = 0) {
     for (let key in src) {
         if (src.hasOwnProperty(key)) {
             let isObjectVal = isObject(src[key]);
             let isArrayVal = isArray(src[key]);
             if (isObjectVal || isArrayVal) {
-                if (depth) {
+                if (dep) {
                     if (isObjectVal) {
                         des[key] = {};
-                        extend(src[key], des[key], depth - 1);
+                        extend(src[key], des[key], dep - 1);
                     }
                     else if (isArrayVal) {
                         des[key] = [];
-                        extend(src[key], des[key], depth - 1);
+                        extend(src[key], des[key], dep - 1);
                     }
                 }
             }
-        }
-        else {
-            des[key] = src[key];
+            else {
+                des[key] = src[key];
+            }
         }
     }
 }
