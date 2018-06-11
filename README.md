@@ -100,4 +100,4 @@ npm test
 * v0.5.0 finish basic features and add es6 and es5 support
 * v1.0.0 add test
 * v1.0.1 compatible with global
-* v1.0.2 use rollup to bundle
+* v2.0.0 use rollup to bundle
