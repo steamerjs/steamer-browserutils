@@ -215,8 +215,8 @@ describe('date', function() {
 
     it('format: yyyy-M-d h:m:s.S', function() {
 
-        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 6:34:54.534');
-        // expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 10:33:31.237');
+        // expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 6:34:54.534');
+        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 10:33:31.237');
 
     });
 
