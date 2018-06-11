@@ -165,10 +165,22 @@ describe('cookie', function() {
 });
 
 describe('date', function() {
+    let timeOffset = 0;
+    let diff = 0;
+    let currentTime = 1483871611237;
+
+    before(() => {
+        let date1 = new Date(currentTime);
+        timeOffset = date1.getTimezoneOffset();
+        diff = timeOffset * 60 * 1000;
+        console.log(diff);
+        currentTime += diff;
+    });
+
 
     it('format: yyyy-MM-dd', function() {
 
-        let currentTime = 1483871611237;
+        // let currentTime = 1483871611237 + diff;
 
         expect(formatDate(currentTime, 'yyyy-MM-dd')).to.eql('2017-01-08');
 
@@ -176,7 +188,7 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd hh:mm', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm'));
 
@@ -186,7 +198,7 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd hh:mm:ss.S', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S'));
 
@@ -196,7 +208,7 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd E HH:mm:ss', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss'));
 
@@ -206,7 +218,7 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd EE hh:mm:ss', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss'));
 
@@ -216,7 +228,7 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd EEE hh:mm:ss', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss'));
 
@@ -226,7 +238,7 @@ describe('date', function() {
 
     it('format: yyyy-M-d h:m:s.S', function() {
 
-        let currentTime = 1483871694534;
+        // let currentTime = 1483871694534 + diff;
 
         // console.log(currentTime, formatDate(currentTime, 'yyyy-M-d h:m:s.S'));
 
@@ -254,13 +266,6 @@ describe('localstorage', function() {
     });
 
     it('delItem', function() {
-
-        // let src = {
-        //     a: 1,
-        //     b: {
-        //         c: 2
-        //     }
-        // };
 
         delItem('key');
 
