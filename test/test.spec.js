@@ -173,14 +173,11 @@ describe('date', function() {
         let date1 = new Date(currentTime);
         timeOffset = date1.getTimezoneOffset();
         diff = timeOffset * 60 * 1000;
-        console.log(diff);
         currentTime += diff;
     });
 
 
     it('format: yyyy-MM-dd', function() {
-
-        // let currentTime = 1483871611237 + diff;
 
         expect(formatDate(currentTime, 'yyyy-MM-dd')).to.eql('2017-01-08');
 
@@ -188,19 +185,11 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd hh:mm', function() {
 
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm'));
-
         expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm')).to.eql('2017-01-08 10:33');
 
     });
 
     it('format: yyyy-MM-dd hh:mm:ss.S', function() {
-
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S'));
 
         expect(formatDate(currentTime, 'yyyy-MM-dd hh:mm:ss.S')).to.eql('2017-01-08 10:33:31.237');
 
@@ -208,19 +197,11 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd E HH:mm:ss', function() {
 
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss'));
-
         expect(formatDate(currentTime, 'yyyy-MM-dd E HH:mm:ss')).to.eql('2017-01-08 日 10:33:31');
 
     });
 
     it('format: yyyy-MM-dd EE hh:mm:ss', function() {
-
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss'));
 
         expect(formatDate(currentTime, 'yyyy-MM-dd EE hh:mm:ss')).to.eql('2017-01-08 周日 10:33:31');
 
@@ -228,21 +209,14 @@ describe('date', function() {
 
     it('format: yyyy-MM-dd EEE hh:mm:ss', function() {
 
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss'));
-
         expect(formatDate(currentTime, 'yyyy-MM-dd EEE hh:mm:ss')).to.eql('2017-01-08 星期日 10:33:31');
 
     });
 
     it('format: yyyy-M-d h:m:s.S', function() {
 
-        // let currentTime = 1483871694534 + diff;
-
-        // console.log(currentTime, formatDate(currentTime, 'yyyy-M-d h:m:s.S'));
-
-        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 10:33:31.237');
+        expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 6:34:54.534');
+        // expect(formatDate(currentTime, 'yyyy-M-d h:m:s.S')).to.eql('2017-1-8 10:33:31.237');
 
     });
 
